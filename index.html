@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Code Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Code Quiz</h1>
+        <h4 class="time">Countdown Timer: 30 Seconds to Play!</h1>
+    </header>
+
+    <div class="container"></div>
+        <div id="quiz"></div>
+        <button id="submit">Submit Quiz</button> 
+        <div id="results"></div>
+    </div>
+
+
+
+    <script>
+
+        // Some variables
+        var quizContainer = document.getElementById("quiz");
+        var resultsContainer = document.getElementById("results");
+        var submitButton = document.getElementById("submit");
+
+
+
+        // Setting up a timer that starts at 30 seconds and will alert the user when it reaches 0.
+        var timeElement = document.querySelector(".time");
+        var secondsLeft = 30;
+
+        function setTime() {
+            var timerInterval = setInterval(function() {
+                secondsLeft--;
+                timeElement.textContent = secondsLeft + " seconds until quiz finishes!";
+
+                if(secondsLeft === 0) {
+                    clearInterval(timerInterval);
+                    sendMessage();
+                }
+            }, 1000);
+        }
+
+            function sendMessage() {
+                timeElement.textContent = " ";
+                alert("Time is up!");
+            }
+
+            setTime();
+
+
+
+            // Question variables
+            (function() {
+            var myQuestions = [
+                {
+                    question: "Commonly used data types DO NOT include:",
+                    answers: {
+                        a: "Strings",
+                        b: "Booleans",
+                        c: "Alerts",
+                        d: "Numbers"
+                    },
+                    correctAnswer: "c"
+                    },
+                    {
+                        question: "The condition in an \"if / else\" statement is enclosed within ____:",
+                        answers: {
+                            a: "Curly Brackets",
+                            b: "Parentheses",
+                            c: "Quotation Marks",
+                            d: "Square Brackets"
+                        },
+                        correctAnswer: "b"
+                    },
+                    {
+                        question: "Is Javascript fun?",
+                        answers: {
+                            a: "Yes",
+                            b: "No",
+                            c: "Maybe",
+                            d: "So"
+                        },
+                        correctAnswer: "a"
+                    }
+            ];
+            
+
+
+            // Function to put in quiz questions on the page.
+            function buildQuiz() {
+                var output = [];
+                myQuestions.forEach((currentQuestion, questionNumber) => {
+                    var answers = [];
+                    for (letter in currentQuestion.answers) {
+                        answers.push(`<label><input type="radio" name="question${questionNumber}"value="${letter}">${letter} : ${currentQuestion.answers[letter]}</label>`);
+                    }
+                    output.push(`<div class="slide"><div class="question">${currentQuestion.question} </div><div class="answers">${answers.join("")} </div></div>`);
+                });
+                quizContainer.innerHTML = output.join("");
+            }
+
+            // Results
+            function showResults() {
+                var answerContainers = quizContainer.querySelectorAll(".answers");
+                let numCorrect = 0;
+                myQuestions.forEach((currentQuestion, questionNumber) => {
+                    var answerContainer = answerContainers[questionNumber];
+                    var selector = `input[name=question${questionNumber}]:checked`;
+                    var userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+                    if (userAnswer === currentQuestion.correctAnswer) {
+                        numCorrect++;
+                    
+                    // Color indication for correct or incorrect answers.
+                    answerContainers[questionNumber].style.color = "lightgreen";
+                    } else {
+                        answerContainers[questionNumber].style.color = "red";
+                    }
+                });
+                resultsContainer.innerHTML = `Score: ${numCorrect} out of ${myQuestions.length}`;
+            }
+
+            buildQuiz();
+
+            submitButton.addEventListener("click", showResults);
+
+
+        })();
+
+
+
+
+    </script>
+    
+</body>
+</html>
