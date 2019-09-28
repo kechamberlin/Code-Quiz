@@ -7,23 +7,42 @@
     <title>Code Quiz</title>
 </head>
 <body>
-    <div id="container">
-        <div id="title">
-            <h1>Code Quiz!</h1>
-        </div>
-        <br>
-        <div id="quiz"></div>
-        <br>
-        <div class="button" id="next-button">Next</div>
-
-
+    <h1>Code Quiz</h1>
+    <h4 class="time">Countdown Timer: 30 Seconds to Play!</h1>
+    <div class="container"></div>
+        <div id="quiz"></div>     
+        <button id="submit">Submit Quiz</button> 
+        <div id="results"></div>
     </div>
 
 
 
+    <script>
 
+        // Setting up a timer that starts at 30 seconds and will alert the user when it reaches 0.
+        var timeElement = document.querySelector(".time");
+        var secondsLeft = 30;
 
-<script src="questions.js"></script>
+        function setTime() {
+            var timerInterval = setInterval(function() {
+                secondsLeft--;
+                timeElement.textContent = secondsLeft + " seconds until quiz finishes!";
+
+                if(secondsLeft === 0) {
+                    clearInterval(timerInterval);
+                    sendMessage();
+                }
+            }, 1000);
+            }
+
+            function sendMessage() {
+                timeElement.textContent = " ";
+                alert("Time is up!");
+            }
+
+            setTime();
+
+    </script>
     
 </body>
 </html>
