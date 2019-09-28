@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Code Quiz</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Code Quiz</h1>
-    <h4 class="time">Countdown Timer: 30 Seconds to Play!</h1>
+    <header>
+        <h1>Code Quiz</h1>
+        <h4 class="time">Countdown Timer: 30 Seconds to Play!</h1>
+    </header>
+
     <div class="container"></div>
-        <div id="quiz"></div>     
+        <div id="quiz"></div>
         <button id="submit">Submit Quiz</button> 
         <div id="results"></div>
     </div>
@@ -19,9 +23,16 @@
 
     <script>
 
+        // Some variables
+        var quizContainer = document.getElementById("quiz");
+        var resultsContainer = document.getElementById("results");
+        var submitButton = document.getElementById("submit");
+
+
+
         // Setting up a timer that starts at 30 seconds and will alert the user when it reaches 0.
         var timeElement = document.querySelector(".time");
-        var secondsLeft = 30;
+        var secondsLeft = 10000;
 
         function setTime() {
             var timerInterval = setInterval(function() {
@@ -33,7 +44,7 @@
                     sendMessage();
                 }
             }, 1000);
-            }
+        }
 
             function sendMessage() {
                 timeElement.textContent = " ";
@@ -43,8 +54,9 @@
             setTime();
 
 
+
+            // Question variables
             (function() {
-            // Questions
             var myQuestions = [
                 {
                     question: "Commonly used data types DO NOT include:",
@@ -57,7 +69,7 @@
                     correctAnswer: "c"
                     },
                     {
-                        question: "The condition in an if / else statement is enclosed within ____",
+                        question: "The condition in an \"if / else\" statement is enclosed within ____:",
                         answers: {
                             a: "Curly Brackets",
                             b: "Parentheses",
@@ -78,6 +90,8 @@
                     }
             ];
             
+
+
             // Function to put in quiz questions on the page.
             function buildQuiz() {
                 var output = [];
@@ -102,14 +116,22 @@
 
                     if (userAnswer === currentQuestion.correctAnswer) {
                         numCorrect++;
-
+                    
+                    // Color indication for correct or incorrect answers.
                     answerContainers[questionNumber].style.color = "lightgreen";
                     } else {
                         answerContainers[questionNumber].style.color = "red";
                     }
                 });
-                resultsContainer.innerHTML = `${numCorrect} out of ${myQuestions.length}`;
+                resultsContainer.innerHTML = `Score: ${numCorrect} out of ${myQuestions.length}`;
             }
+
+            buildQuiz();
+
+            submitButton.addEventListener("click", showResults);
+
+
+        })();
 
 
 
